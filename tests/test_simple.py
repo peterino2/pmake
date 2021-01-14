@@ -4,12 +4,12 @@ import sys
 
 orig_dir = os.path.dirname(os.path.realpath(__file__))
 os.chdir(orig_dir)
-pmake_root = os.path.abspath("../../")
+petesmake_root = os.path.abspath("../")
 
-if pmake_root not in sys.path:
-    sys.path.append(pmake_root)
+if petesmake_root not in sys.path:
+    sys.path.append(petesmake_root)
 
-from pmake import job, pmakemain, get_manager
+from petesmake import job, petesmakemain, get_manager
 
 @job("job1", desc="Job 2 depends on job 1")
 def job2():
@@ -37,7 +37,7 @@ def job1_test():
 
 def test_simple():
     manager = get_manager()
-    pmakemain()
+    petesmakemain()
 
 if __name__ == "__main__":
-    pmakemain()
+    petesmakemain()

@@ -158,7 +158,7 @@ class JobManager:
 def get_manager():
     return JobManager(g_jobs)
 
-def pmakemain():
+def petesmakemain():
     args = parser.parse_args()
 
     manager = JobManager(g_jobs)

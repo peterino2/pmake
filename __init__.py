@@ -1,1 +1,1 @@
-from .pmake import JobManager, parser, pmakemain, job, get_manager
+from .petesmake import JobManager, parser, petesmakemain, job, get_manager
