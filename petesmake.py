@@ -143,7 +143,7 @@ class JobManager:
                     self.run_job(dep)
 
             print(Fore.MAGENTA + f"=========== {Fore.GREEN}Running Job: " + Fore.CYAN + name + Fore.MAGENTA + 
-                    f" [{Fore.GREEN}{len(self.completed_jobs)}{Fore.MAGENTA}/{self.queued_count}] ======== ")
+                    f" [{Fore.GREEN}{len(self.completed_jobs) + 1}{Fore.MAGENTA}/{self.queued_count}] ======== ")
             try:
                 job.func()
                 self.completed_jobs.append(name)
