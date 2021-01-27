@@ -17,6 +17,7 @@ parser.add_argument(
         choices=["DEBUG", "INFO"],
         help="Logging verbosity level"
 )
+
 parser.add_argument(
     "jobs", 
     nargs="*",
@@ -24,10 +25,15 @@ parser.add_argument(
     type=str,
     help="Jobs to run, defaults to all"
 )
+
 parser.add_argument("-l", "--list-jobs", action="store_true", help="List all jobs available")
 
 gargs = None
 g_jobs = {}
+
+def get_gargs():
+    global gargs
+    return gargs
 
 class JobInfo:
     
@@ -60,10 +66,7 @@ class JobInfo:
         for dep in deplist:
             if dep not in odeplist:
                 odeplist.append(dep)
-            
         return odeplist
-            
-
 
 def job(*deps, desc=None, default=True):
     def wrap(f):
@@ -101,7 +104,6 @@ class JobManager:
                 if dep not in queued_jobs:
                     queued_jobs.append(dep)            
 
-
         self.queued_jobs = queued_jobs
         self.queued_count = len(queued_jobs)
         print("======================================================================")
@@ -134,14 +136,13 @@ class JobManager:
             
     def run_job(self, name):
         job = self.jobs[name]
-
+        
         if name not in self.completed_jobs:
             for dep in job.deps:
                 if name == dep:
                     continue
                 if dep not in self.completed_jobs:
                     self.run_job(dep)
-
             print(Fore.MAGENTA + f"=========== {Fore.GREEN}Running Job: " + Fore.CYAN + name + Fore.MAGENTA + 
                     f" [{Fore.GREEN}{len(self.completed_jobs) + 1}{Fore.MAGENTA}/{self.queued_count}] ======== ")
             try:
@@ -150,7 +151,7 @@ class JobManager:
             except:
                 print(f"{Fore.RED}Job {name} failed")
                 raise
-
+    
     def run_jobs(self):
         for job in self.queued_jobs:
             self.run_job(job)
