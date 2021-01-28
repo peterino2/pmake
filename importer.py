@@ -11,17 +11,19 @@ from varname import nameof
 from pogmake import *
 import pogmake
 
+def find_all_subpogs(root):
+    return subpogs
 
-def main_importer(root, cli_args, filename='pogfile'):
-    print(root)
-    print(filename)
+def inner_importer(root, cli_args, _filename=None):
+    filename = _filename
+    if _filename == None:
+        filename = "pogfile"
+
 
     apath = os.path.abspath(os.path.join(root, filename))
-    print(apath)
     if not os.path.exists(apath):
-        print(apath)
         tapath = os.path.abspath(os.path.join(root, filename+'.py'))
-        assert os.path.exists(apath), f" Neither {root + apath} or the .py version exists"
+        assert os.path.exists(tapath), f" Neither {root + apath} or the .py version exists"
         apath = tapath
 
     orig_dir = os.path.dirname(apath)
@@ -44,17 +46,54 @@ def main_importer(root, cli_args, filename='pogfile'):
     mod.subprocess = subprocess
     mod.shutil = shutil
     mod.os = os
+    mod.include_paths = []
+    mod.exclude_paths = []
 
     loader.exec_module(mod)
 
     gjobs = mod.pogmake.get_gjobs()
+    for path in mod.include_paths:
+        jpath = os.path.join(root, path)
 
-    if hasattr(mod, "subfiles"):
-        for fname in mod.subfiles:
-            if os.path.isdir(fname):
-                gjobs.update( main_importer(fname, cli_args))
-            else: 
-                gjobs.update(main_importer(os.path.dirname(fname), cli_args, filename=os.path.basename(fname)))
+        if not os.path.exists(jpath):
+            print(f"Include path in {apath} does not exist: {jpath}")
+            continue
+            
+        if os.path.isdir(jpath):
+            rjobs, modinfo = inner_importer(jpath, cli_args)
+            gjobs.update(rjobs)
+        else:
+            rjobs, modinfo = inner_importer(os.path.dirname(jpath), cli_args, os.path.basename(jpath))
+            gjobs.update(rjobs)
+
+    # if hasattr(mod, "subfiles"):
+    #     for fname in mod.subfiles:
+    #         if os.path.isdir(fname):
+    #             gjobs.update( main_importer(fname, cli_args))
+    #         else: 
+    #             gjobs.update(main_importer(os.path.dirname(fname), cli_args, filename=os.path.basename(fname)))
+
+    return gjobs, mod
+
+def main_importer(root, cli_args, filename='pogfile'):
+
+    subpogs = []
+    first = True
+    gjobs = {}
+    excluded = []
+    for r, d, f in os.walk(root):
+        should_skip = False
+        for path in excluded:
+            if r.startswith(os.path.abspath(path)+os.sep) or r == path:
+                should_skip = True
+
+        if not should_skip:
+            for fname in f:
+                if fname == "pogfile" or fname == "pogfile.py":
+                    rjobs, modinfo = inner_importer(r, cli_args)
+                    gjobs.update(rjobs)
+                    for epath in modinfo.exclude_paths:
+                        excluded.append(os.path.abspath(os.path.join(r, epath)))
 
     return gjobs
 

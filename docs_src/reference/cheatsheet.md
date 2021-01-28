@@ -33,3 +33,9 @@ Additionally there are a few library functions from pogmake that get imported as
     :end-before: /pogfile extra symbols
     :language: python
 ```
+
+```{literalinclude} ../../tests/pogfile.py
+    :start-after: include exclude
+    :end-before: /include exclude
+    :language: python
+```

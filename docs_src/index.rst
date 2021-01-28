@@ -51,7 +51,7 @@ Usage
 
 Btw the usage file seen above is auto-generated based on whatever the output of `pogmake --help` is here's an example of the code to do that.
 
-.. literalinclude:: ../pogfile
+.. literalinclude:: ../pogfile.py
    :start-after: usage_print_example
    :end-before: /usage_print_example
    :language: python
