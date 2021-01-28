@@ -1,0 +1,12 @@
+usage: . [-h] [--verbosity {DEBUG,INFO}] [-l] [jobs ...]
+
+Registers and executes jobs
+
+positional arguments:
+  jobs                  Jobs to run, defaults to all
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --verbosity {DEBUG,INFO}
+                        Logging verbosity level
+  -l, --list-jobs       List all jobs available

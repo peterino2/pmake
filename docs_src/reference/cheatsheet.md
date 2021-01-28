@@ -1,7 +1,5 @@
 # Pmake Cheatsheet
-
 So this thing should theoretically be easy enough to use with all the information needed for it on one cheatsheet.
-
 You can invoke pogmake with either `pogmake` or `pog`. It'll do the same thing.
 
 ## Specifying jobs
@@ -33,6 +31,11 @@ Additionally there are a few library functions from pogmake that get imported as
     :end-before: /pogfile extra symbols
     :language: python
 ```
+By default all pogfiles in inferior pathsto the root are searched for. 
+
+Use `exclude_paths` to skip them.
+
+`include_paths` will also bypass this. And allow you to pull in pogfiles of any any name.
 
 ```{literalinclude} ../../tests/pogfile.py
     :start-after: include exclude
