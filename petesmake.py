@@ -37,14 +37,12 @@ def get_gargs():
 
 class JobInfo:
     
-    def __init__(self, func, desc, deps, default, name):
+    def __init__(self, func, desc, deps=None, default=False, name="Unknown"):
         self.func = func
         self.docs = desc
         self.name = name
-        if deps:
-            self.deps = deps
-        else:
-            self.deps = []
+        self.deps = [*deps]
+        # print("deps : ",self.deps)
         self.default = default
 
     def get_deplist(self, deplist=None):
@@ -53,6 +51,7 @@ class JobInfo:
         if deplist is None:
             deplist = []
             
+        print(self.deps)
         for dep in self.deps:
             if dep == self.name:
                 print(f"warning: {self.name} has itself listed as a dependency")
@@ -84,8 +83,10 @@ class JobManager:
         self.defaults = []
 
         for name, info in self.jobs.items():
-            if info.default: self.defaults.append(name)
+            if info.default: 
+                self.defaults.append(name)
 
+        print(self.defaults)
         self.dispatched_jobs = []
         self.queued_jobs = []
         self.n_jobs = 0
@@ -106,6 +107,7 @@ class JobManager:
 
         self.queued_jobs = queued_jobs
         self.queued_count = len(queued_jobs)
+
         print("======================================================================")
         print("Queueing the following jobs:")
         for job in self.queued_jobs:
@@ -117,21 +119,37 @@ class JobManager:
     def show_jobs(self):
         word = 'are'
         s = 's'
+        default_jobs = []
+        nondefault_jobs = []
+        for name, job in self.jobs.items():
+            if job.default: default_jobs.append(job)
+            else: nondefault_jobs.append(job)
+
         if len(self.jobs) == 1:
             word = "is"
             s = ""
-        print("\n======================================================================")
-        print(f"There {word} {Fore.YELLOW}{len(g_jobs)}{Style.RESET_ALL} job{s} registered: (* means not part of the default)")
-
-        for name, job in self.jobs.items():
+        
+        def print_job(job):
+            name = job.name
             asterix = "* "
-            if job.default:
+            if not job.default:
                 asterix = "  "
+            else:
+                asterix = "* "
 
             if job.docs is not None:
                 print(f"   {asterix}{Fore.MAGENTA + name} - {Fore.GREEN + job.docs}")
             else:
-                print(f"   {asterix}{Fore.MAGENTA + name}")
+                print(f"   {asterix}{Fore.MAGENTA + name} - {Fore.YELLOW + 'no description available'}")
+
+        print("\n======================================================================")
+        print(f"There {word} {Fore.YELLOW}{len(g_jobs)}{Style.RESET_ALL} job{s} registered: (* means part of the default)")
+
+        for job in default_jobs:
+            print_job(job)
+
+        for job in nondefault_jobs:
+            print_job(job)
         print("======================================================================")
             
     def run_job(self, name):
