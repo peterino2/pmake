@@ -20,7 +20,10 @@ def docs():
     subprocess.run(['sphinx-build', 'docs_src', 'build-html'], check=True)
 # /usage_print_example
 
-@job(desc="Runs the tests for pogmake", default=True)
+@job(desc="Runs the tests for pogmake")
 def tests():
     subprocess.run(['python', '..' , '--list'], check=True, cwd='tests')
 
+@job(desc="installs the dependencies for building the docs", default=False)
+def docs_deps():
+    subprocess.run(['python', '-m' , 'pip', 'install', '-r', 'requirements.txt'], check=True, cwd='docs_src')

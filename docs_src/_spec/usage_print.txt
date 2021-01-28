@@ -1,4 +1,4 @@
-usage: . [-h] [--verbosity {DEBUG,INFO}] [-l] [jobs ...]
+usage: . [-h] [--verbosity {DEBUG,INFO}] [-l] [jobs [jobs ...]]
 
 Registers and executes jobs
 
