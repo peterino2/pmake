@@ -4,6 +4,7 @@ import argparse
 import os
 import shutil
 import inspect
+import importlib 
 from colorama import Fore, Style, init
 init(autoreset=True)
 
@@ -73,7 +74,6 @@ class JobInfo:
 
 def job(*deps, desc=None, default=True):
     def wrap(f):
-        print(f"registering job {f.__name__}")
         global g_jobs
         g_jobs[f.__name__] = JobInfo(f, desc, deps, default, f.__name__)
         def wrapped_f(*deps):
@@ -195,20 +195,41 @@ def petesmakemain():
     manager.queue_jobs(args.jobs)
     manager.run_jobs()
 
-import importlib 
 
-def main_importer(root):
+def main_importer(root, args, filename='pmakefile'):
+
+    apath = os.path.abspath(os.path.join(root, filename))
+    if not os.path.exists(apath):
+        apath = os.path.abspath(os.path.join(root, filename+'.py'))
+        assert os.path.exists(apath)
+    orig_dir = os.path.dirname(apath)
+
     loader = importlib.machinery.SourceFileLoader(
-        "tmpPackage", os.path.join(root, 'make.py')
+        "tmpPackage", apath
     )
     spec = importlib.util.spec_from_loader(loader.name, loader)
     mod = importlib.util.module_from_spec(spec)
+
+    # set up pmakefile's internal globals
+    mod.job = job
+    mod.cli_args = args
+    mod.path = os.path
+    mod.pmake = sys.modules[__name__]
+    mod.orig_dir = orig_dir
+
+    # standard imports
+    mod.sys = sys
+    mod.sp = subprocess
+    mod.subprocess = subprocess
+    mod.shutil = shutil
+    mod.os = os
+
     loader.exec_module(mod)
     return mod.pmake.get_gjobs()
     
 def main():
-    gjobs = main_importer(os.getcwd())
     args = parser.parse_args()
+    gjobs = main_importer(os.getcwd(), args)
     manager = JobManager(gjobs)
 
     if args.list_jobs:

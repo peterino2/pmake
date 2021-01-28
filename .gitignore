@@ -1,2 +1,4 @@
 *pyc
 __pycache__
+build-html/
+docs_src/_spec
