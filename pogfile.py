@@ -1,3 +1,6 @@
+sp = subprocess
+path = os.path
+
 # usage_print_example
 docs_spec_folder = path.abspath(path.join("docs_src/_spec"))
 usage_print_file = path.join(docs_spec_folder, "usage_print.txt")

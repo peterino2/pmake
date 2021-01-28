@@ -2,6 +2,8 @@
 
 So this thing should theoretically be easy enough to use with all the information needed for it on one cheatsheet.
 
+You can invoke pogmake with either `pogmake` or `pog`. It'll do the same thing.
+
 ## Specifying jobs
 
 `pogmake` will start parsing pogfiles. Importing the root pogfile as a python object and start registering jobs. Jobs are functions decorated with the `@job` decorator.
@@ -14,4 +16,20 @@ So this thing should theoretically be easy enough to use with all the informatio
 
 Dependencies are specified in a list, and all arguments to the `@job` decorator are optional.
 
+## pogfile Features
 
+pogfiles are python files with a few python imports set.
+
+```{literalinclude} ../../pogmake.py
+    :start-after: pogfile shared imports
+    :end-before: /pogfile shared imports
+    :language: python
+```
+
+Additionally there are a few library functions from pogmake that get imported as well.
+
+```{literalinclude} ../../importer.py
+    :start-after: pogfile extra symbols
+    :end-before: /pogfile extra symbols
+    :language: python
+```

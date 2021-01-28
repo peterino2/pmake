@@ -1,15 +1,25 @@
+# pogfile shared imports
 import subprocess
 import sys
 import argparse
 import os
 import shutil
+# /pogfile shared imports
+
 import inspect
 import importlib 
+
 from colorama import Fore, Style, init
 init(autoreset=True)
 
 parser = argparse.ArgumentParser(
     description = ("Registers and executes jobs")
+)
+
+parser.add_argument( 
+        "--print-hidden-debug",
+        action="store_true",
+        help=argparse.SUPPRESS
 )
 
 parser.add_argument( 
@@ -196,46 +206,4 @@ def petesmakemain():
     manager.run_jobs()
 
 
-def main_importer(root, args, filename='pogfile'):
-
-    apath = os.path.abspath(os.path.join(root, filename))
-    if not os.path.exists(apath):
-        apath = os.path.abspath(os.path.join(root, filename+'.py'))
-        assert os.path.exists(apath)
-    orig_dir = os.path.dirname(apath)
-
-    loader = importlib.machinery.SourceFileLoader(
-        "tmpPackage", apath
-    )
-    spec = importlib.util.spec_from_loader(loader.name, loader)
-    mod = importlib.util.module_from_spec(spec)
-
-    # set up pogfile's internal globals
-    mod.job = job
-    mod.cli_args = args
-    mod.path = os.path
-    mod.pogmake = sys.modules[__name__]
-    mod.orig_dir = orig_dir
-
-    # standard imports
-    mod.sys = sys
-    mod.sp = subprocess
-    mod.subprocess = subprocess
-    mod.shutil = shutil
-    mod.os = os
-
-    loader.exec_module(mod)
-    return mod.pogmake.get_gjobs()
-    
-def main():
-    args = parser.parse_args()
-    gjobs = main_importer(os.getcwd(), args)
-    manager = JobManager(gjobs)
-
-    if args.list_jobs:
-        manager.show_jobs()
-        return
-
-    manager.queue_jobs(args.jobs)
-    manager.run_jobs()
     
