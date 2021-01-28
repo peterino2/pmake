@@ -18,7 +18,7 @@ Dependencies are specified in a list, and all arguments to the `@job` decorator 
 
 pogfiles are python files with a few python imports set.
 
-```{literalinclude} ../../pogmake.py
+```{literalinclude} ../../pogmake/pogmake.py
     :start-after: pogfile shared imports
     :end-before: /pogfile shared imports
     :language: python
@@ -26,7 +26,7 @@ pogfiles are python files with a few python imports set.
 
 Additionally there are a few library functions from pogmake that get imported as well.
 
-```{literalinclude} ../../importer.py
+```{literalinclude} ../../pogmake/importer.py
     :start-after: pogfile extra symbols
     :end-before: /pogfile extra symbols
     :language: python
