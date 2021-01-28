@@ -196,7 +196,7 @@ def petesmakemain():
     manager.run_jobs()
 
 
-def main_importer(root, args, filename='pmakefile'):
+def main_importer(root, args, filename='pogfile'):
 
     apath = os.path.abspath(os.path.join(root, filename))
     if not os.path.exists(apath):
@@ -210,11 +210,11 @@ def main_importer(root, args, filename='pmakefile'):
     spec = importlib.util.spec_from_loader(loader.name, loader)
     mod = importlib.util.module_from_spec(spec)
 
-    # set up pmakefile's internal globals
+    # set up pogfile's internal globals
     mod.job = job
     mod.cli_args = args
     mod.path = os.path
-    mod.pmake = sys.modules[__name__]
+    mod.pogmake = sys.modules[__name__]
     mod.orig_dir = orig_dir
 
     # standard imports
@@ -225,7 +225,7 @@ def main_importer(root, args, filename='pmakefile'):
     mod.os = os
 
     loader.exec_module(mod)
-    return mod.pmake.get_gjobs()
+    return mod.pogmake.get_gjobs()
     
 def main():
     args = parser.parse_args()

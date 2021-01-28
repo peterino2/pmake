@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-pmake! - Peterino's Python make tool 
-=====================================
+pogmake! - Peterino's Python Pog as heck make tool 
+==================================================
 
 =================
 Executive summary
@@ -23,7 +23,7 @@ To get started
 
 .. code:: python
 
-   # pmakefile.py
+   # pogfile.py
    @job(desc="Configure and build with cmake")
    def my_jobname():
        os.makedirs("build", exist_ok=True)
@@ -39,8 +39,8 @@ Becomes
    ======================================================================
    
 
-Even the automation and CI for this repo is done with pmake.
-To get a glimpse of that, run ``python .`` to see all the jobs are available in pmake itself.
+Even the automation and CI for this repo is done with pogmake.
+To get a glimpse of that, run ``python .`` to see all the jobs are available in pogmake itself.
 
 ===============
 Usage
@@ -49,9 +49,9 @@ Usage
 .. literalinclude:: _spec/usage_print.txt
    :language: text
 
-Btw the usage file seen above is auto-generated based on whatever the output of `pmake --help` is here's an example of the code to do that.
+Btw the usage file seen above is auto-generated based on whatever the output of `pogmake --help` is here's an example of the code to do that.
 
-.. literalinclude:: ../pmakefile.py
+.. literalinclude:: ../pogfile
    :start-after: usage_print_example
    :end-before: /usage_print_example
    :language: python

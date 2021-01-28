@@ -4,7 +4,7 @@ So this thing should theoretically be easy enough to use with all the informatio
 
 ## Specifying jobs
 
-`pmake` will start parsing pmakefiles. Importing the root pmakefile as a python object and start registering jobs. Jobs are functions decorated with the `@job` decorator.
+`pogmake` will start parsing pogfiles. Importing the root pogfile as a python object and start registering jobs. Jobs are functions decorated with the `@job` decorator.
 
 ```{code} python
    @job("dependency1", "dependency2", desc="Can't think of a good description", default=True)

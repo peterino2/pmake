@@ -12,12 +12,12 @@ def usage_print():
 
     
 
-@job("usage_print", desc="Builds the documentation for pmake")
+@job("usage_print", desc="Builds the documentation for pogmake")
 def docs():
     os.makedirs("build-html", exist_ok=True)
     sp.run(['sphinx-build', 'docs_src', 'build-html'], check=True)
 
-@job(desc="Runs the tests for pmake", default=False)
+@job(desc="Runs the tests for pogmake", default=False)
 def tests():
     cmd = [sys.executable, "-m", "pytest", verbosity]
     if cli_args.verbosity == "DEBUG":
