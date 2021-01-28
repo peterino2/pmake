@@ -51,8 +51,8 @@ class JobInfo:
         if deplist is None:
             deplist = []
             
-        print(self.deps)
         for dep in self.deps:
+            assert dep in g_jobs, f"{dep} is listed as a dep of {self.name}, but is not a valid target"
             if dep == self.name:
                 print(f"warning: {self.name} has itself listed as a dependency")
                 continue
@@ -86,7 +86,6 @@ class JobManager:
             if info.default: 
                 self.defaults.append(name)
 
-        print(self.defaults)
         self.dispatched_jobs = []
         self.queued_jobs = []
         self.n_jobs = 0
