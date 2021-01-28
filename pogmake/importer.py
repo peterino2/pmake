@@ -10,6 +10,7 @@ from varname import nameof
 
 from pogmake import *
 import pogmake
+import importlib
 
 def find_all_subpogs(root):
     return subpogs

@@ -10,7 +10,7 @@ usage_print_file = path.join(docs_spec_folder, "usage_print.txt")
 @job(desc="Prints the 'usage' to the temporary directory under ")
 def usage_print():
     os.makedirs("docs_src/_spec", exist_ok=True)
-    output = subprocess.check_output([sys.executable, "pogmake", "--help"])
+    output = subprocess.check_output([sys.executable, "pog", "--help"])
     with open(usage_print_file, "w") as f:
         f.write(output.decode())
 
@@ -22,7 +22,7 @@ def docs():
 
 @job(desc="Runs the tests for pogmake")
 def tests():
-    subprocess.run(['python', '../pogmake' , '--list'], check=True, cwd='tests')
+    subprocess.run(['python', '../pog' , '--list'], check=True, cwd='tests')
 
 @job(desc="installs the dependencies for building the docs", default=False)
 def docs_deps():

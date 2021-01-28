@@ -1,4 +1,5 @@
-usage: pogmake [-h] [-s START_FILE] [--verbosity {DEBUG,INFO}] [-l] [jobs ...]
+usage: pog [-h] [-s START_FILE] [--verbosity {DEBUG,INFO}] [-l]
+           [jobs [jobs ...]]
 
 Registers and executes jobs
 
