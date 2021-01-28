@@ -1,4 +1,4 @@
-usage: . [-h] [--verbosity {DEBUG,INFO}] [-l] [jobs [jobs ...]]
+usage: . [-h] [-s START_FILE] [--verbosity {DEBUG,INFO}] [-l] [jobs ...]
 
 Registers and executes jobs
 
@@ -7,6 +7,8 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
+  -s START_FILE, --start-file START_FILE
+                        Starting file location
   --verbosity {DEBUG,INFO}
                         Logging verbosity level
   -l, --list-jobs       List all jobs available

@@ -15,6 +15,13 @@ def find_all_subpogs(root):
     return subpogs
 
 def inner_importer(root, cli_args, _filename=None):
+    """
+    Runs the importer for a target file and 
+    directory, 
+
+    :return: g_jobs, a glob of all the jbos in that file
+    """
+
     filename = _filename
     if _filename == None:
         filename = "pogfile"
@@ -66,13 +73,6 @@ def inner_importer(root, cli_args, _filename=None):
             rjobs, modinfo = inner_importer(os.path.dirname(jpath), cli_args, os.path.basename(jpath))
             gjobs.update(rjobs)
 
-    # if hasattr(mod, "subfiles"):
-    #     for fname in mod.subfiles:
-    #         if os.path.isdir(fname):
-    #             gjobs.update( main_importer(fname, cli_args))
-    #         else: 
-    #             gjobs.update(main_importer(os.path.dirname(fname), cli_args, filename=os.path.basename(fname)))
-
     return gjobs, mod
 
 def main_importer(root, cli_args, filename='pogfile'):
@@ -102,7 +102,16 @@ def print_hidden_debug():
 
 def main():
     args = parser.parse_args()
-    gjobs = main_importer(os.getcwd(), args)
+    args.start_file = os.path.abspath(args.start_file)
+
+    tpath = "pogfile"
+    dirpath = args.start_file
+
+    if not os.path.isdir(dirpath):
+        dirpath = os.path.dirname(args.start_file)
+        tpath = os.path.basename(tpath)
+    
+    gjobs = main_importer(dirpath, args, tpath)
     manager = JobManager(gjobs)
 
     if args.print_hidden_debug:

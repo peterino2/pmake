@@ -23,6 +23,12 @@ parser.add_argument(
 )
 
 parser.add_argument( 
+        "-s", "--start-file",
+        default="./",
+        help="Starting file location"
+)
+
+parser.add_argument( 
         "--verbosity",
         default="INFO",
         choices=["DEBUG", "INFO"],
@@ -191,19 +197,3 @@ class JobManager:
 def get_manager():
     return JobManager(g_jobs)
 
-def petesmakemain():
-    args = parser.parse_args()
-
-    args.list_jobs = True
-
-    manager = JobManager(g_jobs)
-
-    if args.list_jobs:
-        manager.show_jobs()
-        return
-
-    manager.queue_jobs(args.jobs)
-    manager.run_jobs()
-
-
-    
