@@ -31,6 +31,10 @@ parser.add_argument("-l", "--list-jobs", action="store_true", help="List all job
 gargs = None
 g_jobs = {}
 
+def get_gjobs():
+    global g_jobs
+    return g_jobs
+
 def get_gargs():
     global gargs
     return gargs
@@ -69,6 +73,7 @@ class JobInfo:
 
 def job(*deps, desc=None, default=True):
     def wrap(f):
+        print(f"registering job {f.__name__}")
         global g_jobs
         g_jobs[f.__name__] = JobInfo(f, desc, deps, default, f.__name__)
         def wrapped_f(*deps):
@@ -98,7 +103,7 @@ class JobManager:
             queued_jobs = self.defaults
 
         for jobname in queued_jobs:
-            jobinfo = g_jobs[jobname]
+            jobinfo = self.jobs[jobname]
             deplist = jobinfo.get_deplist()
             for dep in deplist:
                 if dep not in queued_jobs:
@@ -142,7 +147,7 @@ class JobManager:
                 print(f"   {asterix}{Fore.MAGENTA + name} - {Fore.YELLOW + 'no description available'}")
 
         print("\n======================================================================")
-        print(f"There {word} {Fore.YELLOW}{len(g_jobs)}{Style.RESET_ALL} job{s} registered: (* means part of the default)")
+        print(f"There {word} {Fore.YELLOW}{len(self.jobs)}{Style.RESET_ALL} job{s} registered: (* means part of the default)")
 
         for job in default_jobs:
             print_job(job)
@@ -179,6 +184,8 @@ def get_manager():
 def petesmakemain():
     args = parser.parse_args()
 
+    args.list_jobs = True
+
     manager = JobManager(g_jobs)
 
     if args.list_jobs:
@@ -187,3 +194,27 @@ def petesmakemain():
 
     manager.queue_jobs(args.jobs)
     manager.run_jobs()
+
+import importlib 
+
+def main_importer(root):
+    loader = importlib.machinery.SourceFileLoader(
+        "tmpPackage", os.path.join(root, 'make.py')
+    )
+    spec = importlib.util.spec_from_loader(loader.name, loader)
+    mod = importlib.util.module_from_spec(spec)
+    loader.exec_module(mod)
+    return mod.pmake.get_gjobs()
+    
+def main():
+    gjobs = main_importer(os.getcwd())
+    args = parser.parse_args()
+    manager = JobManager(gjobs)
+
+    if args.list_jobs:
+        manager.show_jobs()
+        return
+
+    manager.queue_jobs(args.jobs)
+    manager.run_jobs()
+    
