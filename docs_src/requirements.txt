@@ -1,0 +1,5 @@
+sphinx
+myst-parser
+sphinx_rtd_theme
+sphinx-inline-tabs
+sphinx-copybutton
