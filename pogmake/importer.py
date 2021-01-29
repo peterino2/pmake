@@ -8,8 +8,8 @@ import shutil
 
 import logging as lg
 
-import pogmake
-from pogmake import job, JobManager
+from . import core
+from .core import job, JobManager
 import importlib
 
 def find_all_subpogs(root):
@@ -45,7 +45,7 @@ def inner_importer(root, cli_args, _filename=None):
     # pogfile extra symbols
     mod.job = job           # job decorator
     mod.cli_args = cli_args # parsed command line arguments
-    mod.pogmake = pogmake   # reference to pogmake library
+    mod.pogmake = core
     mod.orig_dir = orig_dir # absolute path to origin of this pogfile
     # /pogfile extra symbols
 

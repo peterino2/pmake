@@ -1,7 +1,7 @@
 from .importer import main_importer, inner_importer
 
 import argparse
-from .pogmake import JobManager
+from .core import JobManager
 import logging as lg
 import os
 

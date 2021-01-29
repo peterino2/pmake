@@ -1,4 +1,4 @@
-from .pogmake import JobManager, job, get_manager, get_gjobs
+from .core import JobManager, job, get_manager, get_gjobs
 
 from .app import main
 
