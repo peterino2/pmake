@@ -84,3 +84,12 @@ def main():
 
     manager.queue_jobs(args.jobs)
     manager.run_jobs()
+
+def gmain():
+    """
+    This is the gui version of the pogmake frontend
+
+    Not available yet.
+    """
+    pass
+

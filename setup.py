@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     setuptools.setup(
     name="pogmake", # Replace with your own username
     version="0.0.1",
-    scripts=['pog'],
+    scripts=['pog', 'pogm'],
     author="Peter Li",
     author_email="peterlimail47@gmail.com",
     description="I needed a cross platform makefile",
@@ -18,6 +18,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+    ],
+    install_requires=[
+        'markdown',
+        'colorama',
     ],
     python_requires='>=3.6',
     )

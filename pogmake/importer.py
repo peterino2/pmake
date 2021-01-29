@@ -45,7 +45,8 @@ def inner_importer(root, cli_args, _filename=None):
     # pogfile extra symbols
     mod.job = job           # job decorator
     mod.cli_args = cli_args # parsed command line arguments
-    mod.pogmake = core
+    mod.pogmake_core = core # Access to all pogmake 
+                            # internals but not the importer or the frontend
     mod.orig_dir = orig_dir # absolute path to origin of this pogfile
     # /pogfile extra symbols
 
@@ -59,7 +60,7 @@ def inner_importer(root, cli_args, _filename=None):
 
     loader.exec_module(mod)
 
-    gjobs = mod.pogmake.get_gjobs()
+    gjobs = mod.pogmake_core.get_gjobs()
     for path in mod.include_paths:
         jpath = os.path.join(root, path)
 
