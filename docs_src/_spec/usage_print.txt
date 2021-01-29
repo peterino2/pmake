@@ -1,4 +1,5 @@
-usage: pog [-h] [-v] [-s START_FILE] [--log-level {DEBUG,INFO,WARNING}] [-l]
+usage: pog [-h] [-v] [-e EXPLAIN] [-s START_FILE]
+           [--log-level {DEBUG,INFO,WARNING}] [-l]
            [jobs ...]
 
 Registers and executes jobs
@@ -9,6 +10,9 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -v, --verbose         Overrides logging level to DEBUG
+  -e EXPLAIN, --explain EXPLAIN
+                        Show detailed debug information regarding a specific
+                        job
   -s START_FILE, --start-file START_FILE
                         Starting file location
   --log-level {DEBUG,INFO,WARNING}

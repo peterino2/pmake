@@ -21,7 +21,20 @@ parser.add_argument(
 parser.add_argument( 
         "-v", "--verbose",
         action="store_true",
-        help="Overrides logging level to DEBUG",)
+        help="Overrides logging level to DEBUG",
+)
+
+parser.add_argument( 
+        "--explain-depth",
+        default=None,
+        help="Show detailed debug information regarding a specific job"
+)
+
+parser.add_argument( 
+        "-e", "--explain",
+        default=None,
+        help="Show detailed debug information regarding a specific job"
+)
 
 parser.add_argument( 
         "-s", "--start-file",
@@ -74,6 +87,10 @@ def main():
 
     gjobs = main_importer(dirpath, args, tpath)
     manager = JobManager(gjobs)
+
+    if args.explain:
+        manager.show_detailed_info(args.explain)
+        return
 
     if args.print_hidden_debug:
         print_debug()
