@@ -1,5 +1,5 @@
-usage: pog [-h] [-s START_FILE] [--verbosity {DEBUG,INFO}] [-l]
-           [jobs [jobs ...]]
+usage: pog [-h] [-v] [-s START_FILE] [--log-level {DEBUG,INFO,WARNING}] [-l]
+           [jobs ...]
 
 Registers and executes jobs
 
@@ -8,8 +8,10 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
+  -v, --verbose         Overrides logging level to DEBUG
   -s START_FILE, --start-file START_FILE
                         Starting file location
-  --verbosity {DEBUG,INFO}
-                        Logging verbosity level
+  --log-level {DEBUG,INFO,WARNING}
+                        Sets the logging level for the program's run. (gets
+                        overriden by --verbose)
   -l, --list-jobs       List all jobs available

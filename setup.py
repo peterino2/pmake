@@ -4,8 +4,9 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
     setuptools.setup(
-    name="peterino", # Replace with your own username
+    name="pogmake", # Replace with your own username
     version="0.0.1",
+    scripts=['pog'],
     author="Peter Li",
     author_email="peterlimail47@gmail.com",
     description="I needed a cross platform makefile",

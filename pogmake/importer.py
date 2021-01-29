@@ -6,10 +6,10 @@ import os
 import shutil
 # /pogfile shared imports
 
-from varname import nameof
+import logging as lg
 
-from pogmake import *
 import pogmake
+from pogmake import job, JobManager
 import importlib
 
 def find_all_subpogs(root):
@@ -98,29 +98,3 @@ def main_importer(root, cli_args, filename='pogfile'):
 
     return gjobs
 
-def print_hidden_debug():
-    pass
-
-def main():
-    args = parser.parse_args()
-    args.start_file = os.path.abspath(args.start_file)
-
-    tpath = "pogfile"
-    dirpath = args.start_file
-
-    if not os.path.isdir(dirpath):
-        dirpath = os.path.dirname(args.start_file)
-        tpath = os.path.basename(tpath)
-    
-    gjobs = main_importer(dirpath, args, tpath)
-    manager = JobManager(gjobs)
-
-    if args.print_hidden_debug:
-        print_debug()
-
-    if args.list_jobs:
-        manager.show_jobs()
-        return
-
-    manager.queue_jobs(args.jobs)
-    manager.run_jobs()

@@ -8,42 +8,11 @@ import shutil
 
 import inspect
 import importlib 
+import logging as lg
 
 from colorama import Fore, Style, init
 init(autoreset=True)
 
-parser = argparse.ArgumentParser(
-    description = ("Registers and executes jobs")
-)
-
-parser.add_argument( 
-        "--print-hidden-debug",
-        action="store_true",
-        help=argparse.SUPPRESS
-)
-
-parser.add_argument( 
-        "-s", "--start-file",
-        default="./",
-        help="Starting file location"
-)
-
-parser.add_argument( 
-        "--verbosity",
-        default="INFO",
-        choices=["DEBUG", "INFO"],
-        help="Logging verbosity level"
-)
-
-parser.add_argument(
-    "jobs", 
-    nargs="*",
-    default=["__ALL_JOBS__"],
-    type=str,
-    help="Jobs to run, defaults to all"
-)
-
-parser.add_argument("-l", "--list-jobs", action="store_true", help="List all jobs available")
 
 gargs = None
 g_jobs = {}
