@@ -10,6 +10,7 @@ import logging as lg
 
 from . import core
 from .core import job, JobManager
+from importlib import util
 import importlib
 
 def find_all_subpogs(root):
