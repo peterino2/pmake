@@ -27,3 +27,12 @@ def tests():
 @job(desc="installs the dependencies for building the docs", default=False)
 def docs_deps():
     subprocess.run(['python', '-m' , 'pip', 'install', '-r', 'requirements.txt'], check=True, cwd=os.path.join(orig_dir, 'docs_src'))
+
+@job(desc="uploads to pypi", default=False)
+def upload_to_pypi():
+    cwd = os.getcwd()
+    os.chdir(orig_dir)
+    os.system("python setup.py sdist")
+    os.system("twine upload dist/*")
+    os.chdir(cwd)
+
