@@ -1,12 +1,24 @@
-usage: . [-h] [--verbosity {DEBUG,INFO}] [-l] [jobs ...]
-
-Registers and executes jobs
-
-positional arguments:
-  jobs                  Jobs to run, defaults to all
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --verbosity {DEBUG,INFO}
-                        Logging verbosity level
-  -l, --list-jobs       List all jobs available
+usage: pog [-h] [-v] [--explain-depth EXPLAIN_DEPTH] [-e EXPLAIN]
+           [-s START_FILE] [--log-level {DEBUG,INFO,WARNING}] [-l]
+           [jobs [jobs ...]]
+
+Registers and executes jobs
+
+positional arguments:
+  jobs                  Jobs to run, defaults to all
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         Overrides logging level to DEBUG
+  --explain-depth EXPLAIN_DEPTH
+                        Show detailed debug information regarding a specific
+                        job
+  -e EXPLAIN, --explain EXPLAIN
+                        Show detailed debug information regarding a specific
+                        job
+  -s START_FILE, --start-file START_FILE
+                        Starting file location
+  --log-level {DEBUG,INFO,WARNING}
+                        Sets the logging level for the program's run. (gets
+                        overriden by --verbose)
+  -l, --list-jobs       List all jobs available

@@ -14,12 +14,16 @@ I got really tired of writing makefiles and having it all work in a cross platfo
 
 So I'm writing a python tool that abuses the crap out of python meta-attributes and importlib to basically let me write deterministic build scripts in python that would work in all the CI systems I have to support at my day job.
 
+
+
 ===============
 Quickstart
 ===============
 
+To get started with the walkthrough, run ``pog --init`` in the root directory of your choice to 
+create a ``pogfile.py``.
+
 Pmake files are python files with access to a specific environment.
-To get started
 
 .. code:: python
 
@@ -29,7 +33,7 @@ To get started
        os.makedirs("build", exist_ok=True)
        subprocess.run(["cmake", orig_dir, "-GNinja"], cwd="build")
 
-Becomes
+Becomes.
 
 .. code:: text
 
@@ -64,6 +68,7 @@ Further Reading
    :maxdepth: 2
 
    reference/cheatsheet.md
+   reference/design.md
 
 
 

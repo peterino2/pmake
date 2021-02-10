@@ -6,15 +6,24 @@ import os
 import shutil
 # /pogfile shared imports
 
-from varname import nameof
+import logging as lg
 
-from pogmake import *
-import pogmake
+from . import core
+from .core import job, JobManager
+from importlib import util
+import importlib
 
 def find_all_subpogs(root):
     return subpogs
 
 def inner_importer(root, cli_args, _filename=None):
+    """
+    Runs the importer for a target file and 
+    directory, 
+
+    :return: g_jobs, a glob of all the jbos in that file
+    """
+
     filename = _filename
     if _filename == None:
         filename = "pogfile"
@@ -37,7 +46,8 @@ def inner_importer(root, cli_args, _filename=None):
     # pogfile extra symbols
     mod.job = job           # job decorator
     mod.cli_args = cli_args # parsed command line arguments
-    mod.pogmake = pogmake   # reference to pogmake library
+    mod.pogmake_core = core # Access to all pogmake 
+                            # internals but not the importer or the frontend
     mod.orig_dir = orig_dir # absolute path to origin of this pogfile
     # /pogfile extra symbols
 
@@ -51,7 +61,7 @@ def inner_importer(root, cli_args, _filename=None):
 
     loader.exec_module(mod)
 
-    gjobs = mod.pogmake.get_gjobs()
+    gjobs = mod.pogmake_core.get_gjobs()
     for path in mod.include_paths:
         jpath = os.path.join(root, path)
 
@@ -65,13 +75,6 @@ def inner_importer(root, cli_args, _filename=None):
         else:
             rjobs, modinfo = inner_importer(os.path.dirname(jpath), cli_args, os.path.basename(jpath))
             gjobs.update(rjobs)
-
-    # if hasattr(mod, "subfiles"):
-    #     for fname in mod.subfiles:
-    #         if os.path.isdir(fname):
-    #             gjobs.update( main_importer(fname, cli_args))
-    #         else: 
-    #             gjobs.update(main_importer(os.path.dirname(fname), cli_args, filename=os.path.basename(fname)))
 
     return gjobs, mod
 
@@ -97,20 +100,3 @@ def main_importer(root, cli_args, filename='pogfile'):
 
     return gjobs
 
-def print_hidden_debug():
-    pass
-
-def main():
-    args = parser.parse_args()
-    gjobs = main_importer(os.getcwd(), args)
-    manager = JobManager(gjobs)
-
-    if args.print_hidden_debug:
-        print_debug()
-
-    if args.list_jobs:
-        manager.show_jobs()
-        return
-
-    manager.queue_jobs(args.jobs)
-    manager.run_jobs()

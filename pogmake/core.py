@@ -8,36 +8,11 @@ import shutil
 
 import inspect
 import importlib 
+import logging as lg
 
 from colorama import Fore, Style, init
 init(autoreset=True)
 
-parser = argparse.ArgumentParser(
-    description = ("Registers and executes jobs")
-)
-
-parser.add_argument( 
-        "--print-hidden-debug",
-        action="store_true",
-        help=argparse.SUPPRESS
-)
-
-parser.add_argument( 
-        "--verbosity",
-        default="INFO",
-        choices=["DEBUG", "INFO"],
-        help="Logging verbosity level"
-)
-
-parser.add_argument(
-    "jobs", 
-    nargs="*",
-    default=["__ALL_JOBS__"],
-    type=str,
-    help="Jobs to run, defaults to all"
-)
-
-parser.add_argument("-l", "--list-jobs", action="store_true", help="List all jobs available")
 
 gargs = None
 g_jobs = {}
@@ -52,13 +27,31 @@ def get_gargs():
 
 class JobInfo:
     
-    def __init__(self, func, desc, deps=None, default=False, name="Unknown"):
+    def __init__(self, func, desc, deps=None, default=False, name="Unknown", **kwargs):
         self.func = func
         self.docs = desc
         self.name = name
         self.deps = [*deps]
         # print("deps : ",self.deps)
         self.default = default
+        self.extra = kwargs
+
+    def explain_deps_nested(self, jobdict, _nest_count=None, _superiors=None): 
+
+        nest_count = 0 if _nest_count is None else _nest_count
+        superiors = [] if _superiors is None else _superiors
+        dash = "- "
+        nest_count += 1
+        for dep in self.deps:
+            if dep not in jobdict:
+                print(f"{' '*nest_count*2}{dash}{Fore.RED}{dep} (undefined dependency)")
+            else:
+                depinfo = jobdict[dep]
+                descstr = "" if depinfo.docs == None else f": {Fore.CYAN}{depinfo.docs}"
+                print(f"{' '*nest_count*2}{dash}{Fore.GREEN}{dep}{descstr}")
+                if dep not in superiors:
+                    superiors.append(dep)
+                    jobdict[dep].explain_deps_nested(jobdict, nest_count, superiors)
 
     def get_deplist(self, deplist=None):
         global g_jobs
@@ -67,7 +60,10 @@ class JobInfo:
             deplist = []
             
         for dep in self.deps:
-            assert dep in g_jobs, f"{dep} is listed as a dep of {self.name}, but is not a valid target"
+            if not dep in g_jobs: 
+                print(f"{Fore.RED}{dep} is listed as a dep of {self.name}, but is not a valid target")
+                continue
+            
             if dep == self.name:
                 print(f"warning: {self.name} has itself listed as a dependency")
                 continue
@@ -85,7 +81,7 @@ class JobInfo:
 def job(*deps, desc=None, default=True):
     def wrap(f):
         global g_jobs
-        g_jobs[f.__name__] = JobInfo(f, desc, deps, default, f.__name__)
+        g_jobs[f.__name__] = JobInfo(f, desc, deps, default, f.__name__, where_defined=f.__code__.co_filename)
         def wrapped_f(*deps):
             f(*deps)
         return wrapped_f
@@ -124,11 +120,27 @@ class JobManager:
 
         print("======================================================================")
         print("Queueing the following jobs:")
+        maxshow = 10
+        _maxshow = maxshow
         for job in self.queued_jobs:
             print(f"    {Fore.CYAN}{job}")
+            maxshow -= 1
+            if maxshow == 0:
+                print(f"    ... and {Fore.YELLOW}{self.queued_count - _maxshow}{Fore.RESET} more")
+                break
         print(f"  TOTAL: {Fore.YELLOW}{self.queued_count}")
         print("======================================================================")
         return queued_jobs
+
+    def show_detailed_info(self, jobname):
+        if jobname not in self.jobs:
+            print(f"{Fore.RED}{jobname} is not a registered job")
+            return
+        job = self.jobs[jobname]
+        print(f"Job: {Fore.CYAN}{jobname}")
+        print(f"File: {Fore.CYAN}{job.extra['where_defined']}")
+        print(f"Depends: ")
+        job.explain_deps_nested(self.jobs)
 
     def show_jobs(self):
         word = 'are'
@@ -167,6 +179,10 @@ class JobManager:
         print("======================================================================")
             
     def run_job(self, name):
+        if name not in self.jobs:
+            print(f"{Fore.RED}'{name}' is a listed job but we're skipping it because it is undefined...")
+            return
+
         job = self.jobs[name]
         
         if name not in self.completed_jobs:
@@ -191,19 +207,3 @@ class JobManager:
 def get_manager():
     return JobManager(g_jobs)
 
-def petesmakemain():
-    args = parser.parse_args()
-
-    args.list_jobs = True
-
-    manager = JobManager(g_jobs)
-
-    if args.list_jobs:
-        manager.show_jobs()
-        return
-
-    manager.queue_jobs(args.jobs)
-    manager.run_jobs()
-
-
-    
