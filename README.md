@@ -14,4 +14,5 @@ Documentation available here:
 
 `pip install pogmake`
 
-`pog --list` - to show all jobs 
+`pog --list` - to show all jobs or `pog --init` to create a sample starter file
+
