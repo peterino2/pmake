@@ -14,8 +14,6 @@ I got really tired of writing makefiles and having it all work in a cross platfo
 
 So I'm writing a python tool that abuses the crap out of python meta-attributes and importlib to basically let me write deterministic build scripts in python that would work in all the CI systems I have to support at my day job.
 
-
-
 ===============
 Quickstart
 ===============
@@ -42,9 +40,8 @@ Becomes.
       * my_jobname - Configure and build with cmake
    ======================================================================
    
-
 Even the automation and CI for this repo is done with pogmake.
-To get a glimpse of that, run ``python .`` to see all the jobs are available in pogmake itself.
+To get a glimpse of that, run ``pog`` in a directory to see all the jobs are available in pogmake itself.
 
 ===============
 Usage

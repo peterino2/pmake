@@ -17,7 +17,10 @@ optional arguments:
                         Show detailed debug information regarding a specific
                         job
   -s START_FILE, --start-file START_FILE
-                        Starting file location
+                        Starting file location, if the path is a folder, it
+                        shall look for a 'pogfile.py'. If the path is a file
+                        and not a folder, then that file shall be loaded as a
+                        pogfile.py
   --log-level {DEBUG,INFO,WARNING}
                         Sets the logging level for the program's run. (gets
                         overriden by --verbose)
