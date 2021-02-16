@@ -45,9 +45,9 @@ parser.add_argument(
 
 parser.add_argument(
     "-s",
-    "--start-file",
+    "--start_dir",
     default="./",
-    help="Starting file location, if the path is a folder, it shall look for a 'pogfile.py'. If the path is a file and not a folder, then that file shall be loaded as a pogfile.py",
+    help="This flag will cause pogmake to run in an alternate start location. As if that directory was the root directory.",
 )
 
 loglevels = {
@@ -75,7 +75,6 @@ parser.add_argument(
     "-l", "--list-jobs", action="store_true", help="List all jobs available"
 )
 
-
 def log_setup(args):
     lg.basicConfig(level=loglevels[args.log_level])
     lg.info(f"Logging level set to: {args.log_level}")
@@ -83,38 +82,16 @@ def log_setup(args):
 
 def main():
     args = parser.parse_args()
-    args.start_file = os.path.abspath(args.start_file)
-    if args.init:
-        apath = os.path.abspath(args.start_file)
-        
-        if os.path.isdir(apath):
-            tpath = os.path.join(apath, 'pogfile.py')
-            dpath = apath
-        else:
-            tpath = apath
-            dpath = os.path.dirname(apath)
 
-        
-        os.makedirs(dpath, exist_ok=True)
-        if not os.path.exists(tpath):
-            print(f"Creating default pogfile at: {tpath}")
-            shutil.copy(os.path.join(orig_dir, 'sample_pogfile.py'), tpath)
-        else:
-            print(f"A pogfile with the path {tpath} has already been initialized")
-        return
-
-    log_setup(args)
-
-    tpath = "pogfile"
-    dirpath = args.start_file
+    args.start_dir = os.path.abspath(args.start_dir)
+    dirpath = args.start_dir
 
     if not os.path.isdir(dirpath):
-        dirpath = os.path.dirname(args.start_file)
-        tpath = os.path.basename(tpath)
+        dirpath = os.path.dirname(args.start_dir)
 
-    lg.debug(f"Starting at path: {dirpath} with filename {tpath}")
+    lg.debug(f"Starting at path: {dirpath}.")
 
-    gjobs = main_importer(dirpath, args, tpath)
+    gjobs = main_importer(dirpath, args)
     if len(gjobs.keys()) == 0:
         lg.error(f"{Fore.RED}: No jobs found in the root folder or any subfolders")
         return

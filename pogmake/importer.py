@@ -86,7 +86,6 @@ def inner_importer(root, cli_args, _filename=None):
 
 
 def main_importer(root, cli_args, filename="pogfile"):
-
     subpogs = []
     first = True
     gjobs = {}
@@ -99,7 +98,7 @@ def main_importer(root, cli_args, filename="pogfile"):
 
         if not should_skip:
             for fname in f:
-                if fname == "pogfile" or fname == "pogfile.py":
+                if fname == filename or fname == filename+".py":
                     rjobs, modinfo = inner_importer(r, cli_args)
                     gjobs.update(rjobs)
                     for epath in modinfo.exclude_paths:

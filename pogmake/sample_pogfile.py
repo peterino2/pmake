@@ -5,8 +5,14 @@
 # include_paths = ["test_simple.py", "dont_include/test_anyway/"] 
 
 
+
 @job(desc="Hello World job, this is the toplevel default target")
-def all():
+def top():
     print("Hello friend! from python")
-    env.system("echo hello world from the system shell")
-    env.run("echo", "hello!")
+    env.run("echo", "You can use env.run() to run a subprocess run similar to subprocess.run()")
+    env.system("You can use env.system to try and use a system shell.")
+
+
+@job("top", desc="This is a job that depends on the top job, dependencies are specified as strings")
+def depends_on_top():
+    pass # blank job, does nothing

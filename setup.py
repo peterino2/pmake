@@ -6,8 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     setuptools.setup(
         name="pogmake",  # Replace with your own username
         version="0.0.1",
-        # scripts=['pog', 'pogm', 'pog.bat'],
-        entry_points={"console_scripts": ["pog = pogmake.pogmake:main"]},
+        scripts=['pog', 'pogm', 'pog.bat'],
         author="Peter Li",
         author_email="peterlimail47@gmail.com",
         description="I needed a cross platform makefile",

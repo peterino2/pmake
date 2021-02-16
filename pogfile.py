@@ -1,4 +1,5 @@
 exclude_paths = ["tests"]  # do not look for pogfiles in this directory
+include_paths = ['pogmake/sample_pogfile.py']
 
 path = os.path
 
