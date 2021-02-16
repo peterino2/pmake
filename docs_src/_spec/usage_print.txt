@@ -1,5 +1,5 @@
-usage: pog [-h] [-v] [--explain-depth EXPLAIN_DEPTH] [-e EXPLAIN]
-           [-s START_FILE] [--log-level {DEBUG,INFO,WARNING}] [-l]
+usage: pog [-h] [-v] [--explain-depth EXPLAIN_DEPTH] [-e EXPLAIN] [--init]
+           [-s START_DIR] [--log-level {DEBUG,INFO,WARNING}] [-l]
            [jobs [jobs ...]]
 
 Registers and executes jobs
@@ -16,8 +16,11 @@ optional arguments:
   -e EXPLAIN, --explain EXPLAIN
                         Show detailed debug information regarding a specific
                         job
-  -s START_FILE, --start-file START_FILE
-                        Starting file location
+  --init                Creates a default pogfile in the starting location.
+  -s START_DIR, --start_dir START_DIR
+                        This flag will cause pogmake to run in an alternate
+                        start location. As if that directory was the root
+                        directory.
   --log-level {DEBUG,INFO,WARNING}
                         Sets the logging level for the program's run. (gets
                         overriden by --verbose)
