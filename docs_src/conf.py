@@ -23,28 +23,30 @@ import sys
 
 orig_dir = os.path.abspath(os.path.dirname(__file__))
 
-project = 'Embersong'
-copyright = '2021, Peter Li'
-author = 'Peter Li'
+project = "Embersong"
+copyright = "2021, Peter Li"
+author = "Peter Li"
+
 
 def get_git_root(startpath=None):
     root = startpath
     if not startpath:
-        root = '.'
-    
+        root = "."
+
     levels = 20
     root_found = False
 
     while not root_found:
         dirs = os.listdir(root)
         if ".git" not in dirs:
-            levels -=1
+            levels -= 1
             assert levels > 0
-            
+
             root = os.path.join(root, "../")
         else:
             root_found = True
     return os.path.abspath(root)
+
 
 repo_root = get_git_root()
 
@@ -60,11 +62,11 @@ extensions = [
     "sphinx_copybutton",
     "sphinx.ext.todo",
     "sphinx.ext.autodoc",
-    "sphinx.ext.autosectionlabel"
+    "sphinx.ext.autosectionlabel",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -76,13 +78,13 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 html_logo = "assets/logo.svg"
 html_theme_options = {
     "logo_only": True,
