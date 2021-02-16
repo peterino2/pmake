@@ -16,6 +16,8 @@ as a python module.
 - It will inject various python objects into that module's namespace (such as
   `job` and other pog system controls).
 - It will load submodules according to the [submodule rules](Submodule Rules).
+- functions decorated with @job will be added to the global jobs manager and 
+appear as runnable targets through pog
 
 ## Submodule Rules
 
@@ -30,4 +32,3 @@ but then the path argument will have to specify that target
 If the pogfile sets the variable `autoindex = true` then all inferior folders
 shall be walked and any `pogfile.py` shall automatically be added to the jobs
 description. 
-

@@ -9,10 +9,10 @@ class JobEnv:
     an 'env' object is created in each .py file's module scope. 
 
     And contains defaults with regards to file paths, arguments etc...
-    """
-
-
     
+    It is reccomended that you use this JobEnv file in order to define/run 
+    your jobs. Instead of os.system and subprocess.run(...).
+    """
     def __init__(self, orig_dir, gargs):
         self.orig_dir = orig_dir 
         self.gargs = gargs
@@ -37,7 +37,8 @@ class JobEnv:
             
     def run(self, *run_args, cwd=None, **kwargs):
         """
-        Run a job, analogous to subprocess.run, however defaults to the cwd that is the same as orig_dir
+        Run a job, analogous to subprocess.run, however defaults to the cwd
+        that is the same as orig_dir
         """
         target_cwd = cwd
         if cwd is None:
@@ -47,7 +48,8 @@ class JobEnv:
 
     def system(self, systr, cwd=None):
         """
-        Runs a system shell command, analogous to os.system but with a cwd wrapper, which will default to orig_dir
+        Runs a system shell command, analogous to os.system but with a cwd
+        wrapper, which will default to orig_dir
         """
         oldcwd = os.getcwd()
         

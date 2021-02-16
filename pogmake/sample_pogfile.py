@@ -4,7 +4,7 @@
 # these files/directories shall be imported, even if they're out of path or if they're 
 # include_paths = ["test_simple.py", "dont_include/test_anyway/"] 
 
-
+# autoindex = False # change this to true to automatically search for pogfile.py in inferior directories.
 
 @job(desc="Hello World job, this is the toplevel default target")
 def top():
