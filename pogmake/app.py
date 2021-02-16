@@ -6,6 +6,7 @@ import logging as lg
 import os
 import shutil
 from colorama import Fore
+from .pogmake_execeptions import NoJobError
 
 orig_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -79,9 +80,7 @@ def log_setup(args):
     lg.basicConfig(level=loglevels[args.log_level])
     lg.info(f"Logging level set to: {args.log_level}")
 
-
-def main():
-    args = parser.parse_args()
+def create_manager(args):
 
     args.start_dir = os.path.abspath(args.start_dir)
     dirpath = args.start_dir
@@ -94,8 +93,16 @@ def main():
     gjobs = main_importer(dirpath, args)
     if len(gjobs.keys()) == 0:
         lg.error(f"{Fore.RED}: No jobs found in the root folder or any subfolders")
-        return
+        raise NoJobError
     manager = JobManager(gjobs)
+    
+    return manager
+
+def main():
+
+    args = parser.parse_args()
+
+    manager = create_manager(args)
 
     if args.explain:
         manager.show_detailed_info(args.explain)

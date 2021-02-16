@@ -1,10 +1,9 @@
 # include exclude
-exclude_paths = ["dont_test"]
+exclude_paths = ["dont_test", "unittests"]
 include_paths = ["test_simple.py", "dont_test/test_anyway/"]
 # /include exclude
 
 autoindex = True
-
 
 @job("self_depends")
 def self_depends():

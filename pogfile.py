@@ -25,7 +25,11 @@ def docs():
 @job(desc="Runs the tests for pogmake")
 def tests():
     subprocess.run(
-        ["python", "../pog", "--list"], check=True, cwd=os.path.join(orig_dir, "tests")
+        [sys.executable, "../run.py", "--list"], check=True, cwd=os.path.join(orig_dir, "tests")
+    )
+
+    subprocess.run(
+        [sys.executable, "-m", "pytest", "-vvv"], check=True, cwd=os.path.join(orig_dir, "tests")
     )
 
 

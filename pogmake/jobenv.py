@@ -24,6 +24,9 @@ class JobEnv:
         }
 
     def dbg(self, ostr):
+        """
+        A debug print, this will only print if --verbose is passed into the program
+        """
         self.log(ostr, "DEBUG")
 
     def log(self, ostr, verbosity=None):

@@ -205,7 +205,7 @@ class JobManager:
             )
             return
 
-        job = self.jobs[name]
+        job = self._get_job(name)
 
         if name not in self.completed_jobs:
             for dep in job.deps:
@@ -232,6 +232,9 @@ class JobManager:
         for job in self.queued_jobs:
             self.run_job(job)
 
+    def _get_job(self, jobname):
+        job = self.jobs[jobname]
+        return job
 
 def get_manager():
     return JobManager(g_jobs)
