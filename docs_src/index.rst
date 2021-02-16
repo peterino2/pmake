@@ -67,7 +67,5 @@ Further Reading
    reference/cheatsheet.md
    reference/design.md
 
-
-
 .. * :ref:`genindex`
 .. * :ref:`search`

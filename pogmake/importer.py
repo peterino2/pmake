@@ -62,6 +62,10 @@ def inner_importer(root, cli_args, _filename=None):
     mod.include_paths = []
     mod.exclude_paths = []
     mod.env = JobEnv(orig_dir, cli_args)
+    
+    if not hasattr(mod, "autoindex"):
+    
+        mod.autoindex = False
 
     loader.exec_module(mod)
 
@@ -76,16 +80,29 @@ def inner_importer(root, cli_args, _filename=None):
         if os.path.isdir(jpath):
             rjobs, modinfo = inner_importer(jpath, cli_args)
             gjobs.update(rjobs)
+
         else:
             rjobs, modinfo = inner_importer(
-                os.path.dirname(jpath), cli_args, os.path.basename(jpath)
+                os.path.dirname(jpath),
+                cli_args,
+                os.path.basename(jpath)
             )
+
             gjobs.update(rjobs)
 
     return gjobs, mod
 
+def main_importer(root, cli_args, startfile=None):
+    gjobs, startmod = inner_importer(root, cli_args, startfile)
+    
+    if startmod.autoindex:
+        rjobs = autoindex_importer(root, cli_args)
+        gjobs.update(rjobs)
 
-def main_importer(root, cli_args, filename="pogfile"):
+    return gjobs
+
+
+def autoindex_importer(root, cli_args, filename="pogfile"):
     subpogs = []
     first = True
     gjobs = {}
