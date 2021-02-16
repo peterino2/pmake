@@ -5,6 +5,6 @@ def job1():
     pass
 
 
-@job(test1)
+@job("test1")
 def job2():
     pass

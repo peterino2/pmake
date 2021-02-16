@@ -2,9 +2,8 @@ import os
 import sys
 
 orig_dir = os.path.abspath(os.path.dirname(__file__))
-print(os.path.abspath(os.path.join(orig_dir, '../../')))
 
-sys.path.append(os.path.abspath(os.path.join(orig_dir, '../../')))
+sys.path.append(os.path.abspath(os.path.join(orig_dir, '../../../')))
 
 import pogmake
 
@@ -18,8 +17,8 @@ def test_pogfile_simple():
     args = pogmake.parser.parse_args(args_raw)
     args.start_dir = orig_dir 
 
-    manager = create_manager(args)
+    manager = pogmake.create_manager(args)
     jobs = manager.jobs
     
-    assert "job1" in jobs 
-    assert "job2" in jobs
+    assert "autoindexed_job" in jobs 
+    

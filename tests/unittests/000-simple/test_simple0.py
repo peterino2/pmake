@@ -17,8 +17,9 @@ def test_pogfile_simple():
     args = pogmake.parser.parse_args(args_raw)
     args.start_dir = orig_dir 
 
-    manager = create_manager(args)
+    manager = pogmake.create_manager(args)
     jobs = manager.jobs
     
-    assert "autoindexed_job" in jobs 
-    
+    assert "job1" in jobs 
+    assert "job2" in jobs
+
