@@ -47,5 +47,5 @@ def upload_to_pypi():
     cwd = os.getcwd()
     os.chdir(orig_dir)
     os.system("python setup.py sdist")
-    os.system("twine upload dist/*")
+    os.system("python -m twine upload dist/*")
     os.chdir(cwd)
