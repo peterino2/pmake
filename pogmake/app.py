@@ -103,7 +103,8 @@ def main():
     args = parser.parse_args()
 
     if args.init:
-        shutil.copy(os.path.abspath(os.path.join(orig_dir, '../', 'tests/init_test/pogfile.py')), './')
+        assert not os.path.exists('pogfile.py'), 'a pogfile.py is already detected.'
+        shutil.copy(os.path.abspath(os.path.join(orig_dir, 'sample_pogfile.py')), './pogfile.py')
         print("Check out pogfile.py or run pog --list to see available jobs.")
         return
 
