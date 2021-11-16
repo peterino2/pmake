@@ -102,7 +102,13 @@ def main():
 
     args = parser.parse_args()
 
+    if args.init:
+        shutil.copy(os.path.abspath(os.path.join(orig_dir, '../', 'tests/init_test/pogfile.py')), './')
+        print("Check out pogfile.py or run pog --list to see available jobs.")
+        return
+
     manager = create_manager(args)
+
 
     if args.explain:
         manager.show_detailed_info(args.explain)
