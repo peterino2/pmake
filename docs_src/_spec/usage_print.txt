@@ -1,6 +1,6 @@
 usage: pog [-h] [-v] [--explain-depth EXPLAIN_DEPTH] [-e EXPLAIN] [--init]
            [-s START_DIR] [--log-level {DEBUG,INFO,WARNING}] [-l]
-           [jobs [jobs ...]]
+           [jobs ...]
 
 Registers and executes jobs
 

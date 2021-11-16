@@ -18,7 +18,7 @@ def usage_print():
 @job("usage_print", desc="Builds the documentation for pogmake")
 def docs():
     os.makedirs("build-html", exist_ok=True)
-    subprocess.run(["sphinx-build", "docs_src", "build-html"], check=True, cwd=orig_dir)
+    subprocess.run([sys.executable, "-m", "sphinx", "docs_src", "build-html"], check=True, cwd=orig_dir)
     # /usage_print_example
 
 
