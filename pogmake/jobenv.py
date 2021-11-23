@@ -47,7 +47,7 @@ class JobEnv:
         if cwd is None:
             target_cwd = self.orig_dir
         
-        subprocess.run(run_args, cwd=target_cwd)
+        subprocess.check_output(run_args, cwd=target_cwd)
 
     def system(self, systr, cwd=None):
         """
